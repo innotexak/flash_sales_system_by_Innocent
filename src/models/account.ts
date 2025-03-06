@@ -19,13 +19,13 @@ const accountSchema = new mongoose.Schema<IAccount>({
   name: {
     type:String,
     index:true,
-    require:true,
+    required:true,
 },
   email: { 
     type: String, 
     unique: true,
     index:true,
-    require:true,
+    required:true,
 },
 phoneNumber:{
     type:Number

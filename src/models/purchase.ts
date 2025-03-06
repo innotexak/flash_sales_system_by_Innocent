@@ -12,15 +12,16 @@ export interface IPurchase extends Document{
  const purchaseSchema = new mongoose.Schema<IPurchase>({
   userId: { 
     type: mongoose.Schema.Types.ObjectId, 
-    ref: "Account" },
+    index:true,
+   },
 
   productId: { 
     type: mongoose.Schema.Types.ObjectId, 
-    ref: "Product" 
+    index:true,
   },
   paymentId:{ 
-    type: mongoose.Schema.Types.ObjectId, 
-    ref: "Payment" 
+    type: mongoose.Schema.Types.ObjectId,
+    index:true
   },
   quantity: {
     type:Number

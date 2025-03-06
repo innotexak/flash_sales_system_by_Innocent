@@ -14,7 +14,8 @@ const productSchema = new mongoose.Schema<IProduct>({
   name: {
     type:String,
     index:true,
-    required:true
+    required:true,
+    lowercase:true
 },
   stock: { 
     type: Number, 

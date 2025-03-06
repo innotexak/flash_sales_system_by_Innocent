@@ -10,18 +10,13 @@ import payment from "../models/payment.js";
 
 class ProductPurchaseController {
   async getProductDetails(req: Request, res: Response): Promise<void> {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      res.status(400).json({ success: false, error: { message: "Validation errors", details: errors.array() } });
-      return;
-    }
     try {
       const product = await __Product.findById(req.params.id);
       if (!product) {
         res.status(404).json({ success: false, error: { message: "Product not found" } });
         return;
       }
-      res.json({ success: true, data: { stock: product.stock, price: product.price } });
+      res.json({ success: true, data: { stock: product.stock, price: Number(product.price.toString()) } });
     } catch (error) {
       console.error("Error getting product details:", error);
       res.status(500).json({ success: false, error: { message: "Internal Server Error" } });
@@ -92,16 +87,35 @@ async getProducts(req: CustomRequest, res: Response){
     res.status(500).json({ success: false, error: { message: "Internal Server Error" } });
   }
 }
-  async getLeaderboard(req: Request, res: Response): Promise<void> {
-    try {
-      const purchases: Record<string, any> = await __Purchase.find().populate("userId", "name").sort({ createdAt: 1 });
-      const leaderboardData = purchases.map((p) => ({ name: p.userId.name, timestamp: p.createdAt }));
-      res.json({ success: true, data: leaderboardData });
-    } catch (error) {
-      console.error("Error getting leaderboard:", error);
-      res.status(500).json({ success: false, error: { message: "Internal Server Error" } });
-    }
+async getLeaderboard(req: CustomRequest, res: Response): Promise<void> {
+  try {
+    const purchases = await __Purchase.aggregate([
+      {
+        $lookup: {
+          from: "accounts", 
+          localField: "userId",
+          foreignField: "_id",
+          as: "user"
+        }
+      },
+      { $unwind: "$user" }, 
+      { $sort: { createdAt: 1 } }, 
+      {
+        $project: {
+          _id: 0,
+          name: { $concat: ["$user.firstName", " ", "$user.lastName"] }, 
+          timestamp: "$createdAt"
+        }
+      }
+    ]);
+
+    res.json({ success: true, data: purchases });
+  } catch (error) {
+    console.error("Error getting leaderboard:", error);
+    res.status(500).json({ success: false, error: { message: "Internal Server Error" } });
   }
+}
+
 
   async updateAndFinalizePurchase(req: Request, res: Response){
     const paymentRef = req.params.reference
@@ -151,6 +165,7 @@ async getProducts(req: CustomRequest, res: Response){
     }
   }
   
+
   
 }
 

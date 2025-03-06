@@ -199,7 +199,7 @@ router.get(
    *       500:
    *         description: Internal server error
    */
-  await flashService.getProductDetails.bind(req.res)
+  await flashService.getProductDetails(req, res)
 }
 );
 
@@ -409,44 +409,6 @@ router.post("/webhook", async (req: Request, res: Response) => {
   await new PaystackPaymentService().processWebhook(req.body);
 });
 
-// Paystack Webhook
-router.post("/webhook", async (req: Request, res: Response) => {
-  /**
-   * @swagger
-   * /api/v1/webhook:
-   *   post:
-   *     summary: Paystack payment webhook
-   *     description: Handle the webhook from Paystack after a payment is completed.
-   *     requestBody:
-   *       required: true
-   *       content:
-   *         application/json:
-   *           schema:
-   *             type: object
-   *             properties:
-   *               event:
-   *                 type: string
-   *                 example: "charge.success"
-   *               data:
-   *                 type: object
-   *                 properties:
-   *                   reference:
-   *                     type: string
-   *                     example: "paystack-payment-reference"
-   *                   amount:
-   *                     type: number
-   *                     example: 29.99
-   *                   status:
-   *                     type: string
-   *                     example: "success"
-   *     responses:
-   *       200:
-   *         description: Webhook processed successfully
-   *       500:
-   *         description: Internal server error
-   */
-  await new PaystackPaymentService().processWebhook(req.body);
-});
 
 
 /**

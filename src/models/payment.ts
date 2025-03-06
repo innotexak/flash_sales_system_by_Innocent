@@ -20,9 +20,11 @@ const paymentSchema = new mongoose.Schema<IPayment>({
 
  amount: {
     type:mongoose.Types.Decimal128,
+
 },
   productId:{
-    type: mongoose.Types.ObjectId, ref:"Products"
+    type: mongoose.Types.ObjectId, 
+    index:true
 },
 
 status:{
@@ -31,7 +33,9 @@ status:{
     default:ITransactionEnum.Pending
 },
 paymentRef:{
-    type:String
+    type:String,
+    trim:true,
+    unique:true
 }
 },{
     timestamps:true
