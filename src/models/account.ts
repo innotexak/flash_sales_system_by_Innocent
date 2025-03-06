@@ -19,7 +19,6 @@ const accountSchema = new mongoose.Schema<IAccount>({
   name: {
     type:String,
     index:true,
-    required:true,
 },
   email: { 
     type: String, 

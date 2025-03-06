@@ -2,10 +2,10 @@ import __Account, { IAccount } from "../models/account.js";
 import { Request, Response } from "express";
 
 export interface CustomRequest extends Request {
-    user?: IAccount; // You can specify the type more explicitly for user
+    user?: IAccount;
   }
 class UserService {
-    // ✅ Create a new user
+    // Create a new user
     async createUser(req:Request, res:Response) {
       try {
         const userData= req.body
@@ -13,7 +13,7 @@ class UserService {
         await user.save();
         res.status(201).json(user);
       } catch (error) {
-        throw new Error(`Error creating user: ${(error as Error).message}`);
+        res.status(400).send({success:false, message:`Error creating user: ${(error as Error).message}`});
       }
     }
   
@@ -23,7 +23,7 @@ class UserService {
     try {
         const {email, password} = req.body
       const user:IAccount = await __Account.findOne({ email });
-      if (!user) throw new Error("Invalid email or password");
+      if (!user) res.status(400).send({success:false, message:"Invalid email or password"});
 
       const isMatch = await user.comparePassword(password);
       if (!isMatch) throw new Error("Invalid email or password");

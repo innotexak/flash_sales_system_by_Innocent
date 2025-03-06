@@ -9,6 +9,7 @@ import cors from 'cors'
 
 import swaggerUi from 'swagger-ui-express';
 import swaggerJsdoc from 'swagger-jsdoc';
+import errorMiddleware from "./middleware/errorHandler.js";
 
 // Check if we are in development or production mode
 const isProduction = process.env.NODE_ENV === 'production';
@@ -85,6 +86,11 @@ app.use(limiter);
 
 
 const PORT: number = Number(process.env.PORT) || 5000;
+
+
+// Use the error middleware (last in the middleware chain)
+app.use(errorMiddleware);
+
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);

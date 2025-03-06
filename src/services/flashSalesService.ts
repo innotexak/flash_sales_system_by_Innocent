@@ -9,20 +9,23 @@ import { CustomRequest } from "./userService.js";
 import payment from "../models/payment.js";
 
 class ProductPurchaseController {
+  //Get products details
   async getProductDetails(req: Request, res: Response): Promise<void> {
+
     try {
       const product = await __Product.findById(req.params.id);
       if (!product) {
         res.status(404).json({ success: false, error: { message: "Product not found" } });
         return;
       }
-      res.json({ success: true, data: { stock: product.stock, price: Number(product.price.toString()) } });
+      res.json({ success: true, data: { stock: product.stock, price: product.price } });
     } catch (error) {
       console.error("Error getting product details:", error);
       res.status(500).json({ success: false, error: { message: "Internal Server Error" } });
     }
   }
 
+  //Initialize payment
   async makePurchase(req: CustomRequest, res: Response): Promise<void> {
 
     const {user} = req
@@ -74,6 +77,7 @@ class ProductPurchaseController {
     }
   }
 
+//Get all available products
 async getProducts(req: CustomRequest, res: Response){
   try {
     const product = await __Product.find({});
@@ -87,7 +91,8 @@ async getProducts(req: CustomRequest, res: Response){
     res.status(500).json({ success: false, error: { message: "Internal Server Error" } });
   }
 }
-async getLeaderboard(req: CustomRequest, res: Response): Promise<void> {
+
+async getLeaderboard(req: CustomRequest, res: Response) {
   try {
     const purchases = await __Purchase.aggregate([
       {
@@ -117,10 +122,20 @@ async getLeaderboard(req: CustomRequest, res: Response): Promise<void> {
 }
 
 
+//Update payment
   async updateAndFinalizePurchase(req: Request, res: Response){
     const paymentRef = req.params.reference
     const payments = await __Payment.findOne({paymentRef})
-    if(payments.status === ITransactionEnum.Success) res.status(200).json({success:true, message:"payment already updated"})
+
+    if(!payment) {
+      res.status(400).json({success:false, message:"Invalid verification flow"})
+      return 
+    }
+
+    if(payments.status === ITransactionEnum.Success){ 
+      res.status(200).json({success:true, message:"payment already updated"})
+      return
+    }
 
       const verifyPay = await new PaystackPaymentService().verifyTransaction(paymentRef)
       if(verifyPay.status === ITransactionEnum.Success){
@@ -136,6 +151,7 @@ async getLeaderboard(req: CustomRequest, res: Response): Promise<void> {
 
   }
 
+  //Add product
   async addProduct(req: CustomRequest, res: Response) {
     try {
       const { name, stock, price, saleStart, saleEnd } = req.body;
