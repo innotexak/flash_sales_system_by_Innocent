@@ -1,22 +1,41 @@
-```markdown
-# Microservice API
+# Flash Sales API
 
-## Overview
-This is a Node.js microservice using Express and TypeScript with a test-driven development (TDD) approach. The service provides basic user management, including retrieving users, creating users, and fetching a user by email.
+This is the backend API for the Flash Sales System, built with Node.js, Express, and TypeScript. It includes authentication, payment integration, and a flash sales management system.
 
-## Features
-- Get a list of users
-- Create a new user
-- Retrieve a user by email
-- Written in TypeScript
-- Tested with Jest and Supertest
+## Prerequisites
+
+Ensure you have the following installed:
+- Node.js (16.x or 18.x)
+- npm (10.5.0 or later)
+- MongoDB
+
+## Project Structure
+
+```
+flash_sales_api/
+│── src/
+│   ├── config/       # Configuration files
+│   ├── helpers/      # Utility services (generalService)
+│   ├── middleware/   # Express middleware
+│   ├── models/       # Mongoose schemas
+│   ├── routes/       # API routes
+│   ├── services/     # Business logic
+│   │   ├── flashSalesService.ts
+│   │   ├── paystackPayService.ts
+│   │   ├── userService.ts
+│   ├── app.ts        # Express app setup
+│── dist/             # Compiled TypeScript code
+│── package.json      # Project dependencies
+│── tsconfig.json     # TypeScript configuration
+│── .env              # Environment variables
+```
 
 ## Installation
 
 1. Clone the repository:
    ```sh
-   git clone <repository-url>
-   cd microservice
+   git clone https://github.com/your-repo/flash_sales_api.git
+   cd flash_sales_api
    ```
 
 2. Install dependencies:
@@ -24,84 +43,39 @@ This is a Node.js microservice using Express and TypeScript with a test-driven d
    yarn install
    ```
 
-3. Start the development server:
-   ```sh
-   yarn dev
+3. Create a `.env` file in the root directory and add your environment variables:
+   ```env
+   MONGO_URL=mongodb://127.0.0.1:27017/flash-sales
+   NODE_ENV=development
+   PORT=5000
+   PAYSTACK_BASE_URL=https://api.paystack.co
+   PAYSTACK_SECRET_KEY=your_paystack_secret_key
+   ACCESS_SECRETKEY=your_access_secret_key
    ```
 
-## Running Tests
-To run the Jest tests with coverage:
+## Running the Server
+
+### Development Mode
+To start the server in development mode with hot-reloading:
 ```sh
-yarn test
+yarn dev
 ```
 
-## API Endpoints
-
-### Get all users
-```http
-GET /users
-```
-Response:
-```json
-[
-  { "name": "John Doe", "email": "john@example.com" }
-]
-```
-
-### Create a user
-```http
-POST /users
-```
-Request Body:
-```json
-{
-  "name": "John Doe",
-  "email": "john@example.com"
-}
-```
-Response:
-```json
-{
-  "name": "John Doe",
-  "email": "john@example.com"
-}
-```
-
-### Get user by email
-```http
-GET /users/:email
-```
-Response (if user exists):
-```json
-{
-  "name": "John Doe",
-  "email": "john@example.com"
-}
-```
-Response (if user not found):
-```json
-{
-  "message": "User not found"
-}
-```
-
-## Git Workflow
-
-### Undo `git add .`
-If you mistakenly staged all changes, run:
+### Production Mode
+To build and start the server in production mode:
 ```sh
-git reset .
+yarn build
+yarn dev
 ```
-To unstage a specific file:
-```sh
-git reset <file-name>
+
+## API Documentation
+
+Swagger documentation is available at:
 ```
-If you already committed and want to undo it:
-```sh
-git reset --soft HEAD~1
+http://localhost:5000/api-docs
 ```
+
 
 ## License
-MIT License
-```
 
+This project is licensed under the MIT License.
