@@ -1,11 +1,29 @@
 {
   "compilerOptions": {
-    "target": "ES6",
-    "module": "CommonJS",
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "strict": true,
-    "esModuleInterop": true
+    "strict": false,
+    "skipLibCheck": true,
+    "rootDirs": [
+      "src"
+    ],
+    "outDir": "dist",
+    "lib": [
+      "es2020"
+    ],
+    "target": "es2020",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "inlineSourceMap": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "typeRoots": [
+      "types"
+    ],
+    "allowSyntheticDefaultImports": true
+  },
+  "exclude": [
+    "node_modules",
+  ],
+  "ts-node": {
+    "esm": true
   }
 }
- 

@@ -1,13 +1,6 @@
 # Flash Sales API
 
-This is the backend API for the Flash Sales System, built with Node.js, Express, and TypeScript. It includes authentication, payment integration, and a flash sales management system.
-
-## Prerequisites
-
-Ensure you have the following installed:
-- Node.js (16.x or 18.x)
-- npm (10.5.0 or later)
-- MongoDB
+Flash Sales API is a backend service built with Node.js, Express, and MongoDB. It provides features such as user management, payment integration via Paystack, and flash sales functionality.
 
 ## Project Structure
 
@@ -15,14 +8,14 @@ Ensure you have the following installed:
 flash_sales_api/
 │── src/
 │   ├── config/       # Configuration files
-│   ├── helpers/      # Utility services (generalService)
+│   ├── helpers/      # General utilities (includes generalService)
 │   ├── middleware/   # Express middleware
 │   ├── models/       # Mongoose schemas
 │   ├── routes/       # API routes
 │   ├── services/     # Business logic
-│   │   ├── flashSalesService.ts
-│   │   ├── paystackPayService.ts
-│   │   ├── userService.ts
+│   │   ├── flashSalesService.ts  # Flash sales service
+│   │   ├── paystackPayService.ts # Paystack integration service
+│   │   ├── userService.ts        # User-related operations
 │   ├── app.ts        # Express app setup
 │── dist/             # Compiled TypeScript code
 │── package.json      # Project dependencies
@@ -30,52 +23,76 @@ flash_sales_api/
 │── .env              # Environment variables
 ```
 
+## Prerequisites
+
+Ensure you have the following installed:
+- **Node.js** (16.x or 18.x recommended)
+- **MongoDB** (running locally or cloud instance)
+- **Git**
+
 ## Installation
 
-1. Clone the repository:
-   ```sh
-   git clone https://github.com/your-repo/flash_sales_api.git
-   cd flash_sales_api
-   ```
+Clone the repository:
+```sh
+git clone git@github.com:innotexak/flash_sales_system_by_Innocent.git
+```
 
-2. Install dependencies:
-   ```sh
-   yarn install
-   ```
+Navigate into the project directory:
+```sh
+cd flash_sales_api
+```
 
-3. Create a `.env` file in the root directory and add your environment variables:
-   ```env
-   MONGO_URL=mongodb://127.0.0.1:27017/flash-sales
-   NODE_ENV=development
-   PORT=5000
-   PAYSTACK_BASE_URL=https://api.paystack.co
-   PAYSTACK_SECRET_KEY=your_paystack_secret_key
-   ACCESS_SECRETKEY=your_access_secret_key
-   ```
+Install dependencies:
+```sh
+yarn install
+```
+
+## Configuration
+
+Create a `.env` file in the root directory and provide the required environment variables:
+```env
+MONGO_URL=<your-mongodb-connection-string>
+NODE_ENV=development
+PORT=5000
+PAYSTACK_BASE_URL=https://api.paystack.co
+PAYSTACK_SECRET_KEY=<your-paystack-secret-key>
+ACCESS_SECRETKEY=<your-secret-key>
+```
 
 ## Running the Server
 
-### Development Mode
-To start the server in development mode with hot-reloading:
+For development mode with auto-restart:
 ```sh
 yarn dev
 ```
 
-### Production Mode
-To build and start the server in production mode:
+For production mode:
 ```sh
 yarn build
-yarn dev
+node dist/src/app.js
 ```
 
 ## API Documentation
 
-Swagger documentation is available at:
+After starting the server, access the Swagger documentation at:
 ```
 http://localhost:5000/api-docs
 ```
 
+## Git Remote Setup
+
+To link your project with GitHub, use:
+```sh
+git remote add flash git@github.com:innotexak/flash_sales_system_by_Innocent.git
+```
+
+To push your changes:
+```sh
+git push flash main
+```
 
 ## License
 
 This project is licensed under the MIT License.
+
+---
