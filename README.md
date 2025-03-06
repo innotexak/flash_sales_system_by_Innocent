@@ -79,18 +79,6 @@ After starting the server, access the Swagger documentation at:
 http://localhost:5000/api-docs
 ```
 
-## Git Remote Setup
-
-To link your project with GitHub, use:
-```sh
-git remote add flash git@github.com:innotexak/flash_sales_system_by_Innocent.git
-```
-
-To push your changes:
-```sh
-git push flash main
-```
-
 ## License
 
 This project is licensed under the MIT License.
